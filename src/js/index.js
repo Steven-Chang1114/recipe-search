@@ -1,14 +1,48 @@
 // Global app controller
-import axios from "axios"
+import searchModel from "./model/Search"
 
-async function getResult(query){
-    try{
-        const res = await axios(`https://forkify-api.herokuapp.com/api/search?&q=${query}`);
-        console.log(res)
-        const recipe = res.data.recipes;
-        console.log(recipe);
-    } catch(error){
-        console.log(error)
-    }  
-} 
-getResult('pizza');  
+const state  = {
+    //Search object
+    //Shopping list
+    //Current page
+    //Current recipe
+    //Like 
+    //Serving
+}
+
+const ctrlSearch = async () => {
+    const searchRes = 'pizza' //Placeholder
+
+    if (searchRes){
+
+        state.search = new searchModel(searchRes)
+        console.log(state);
+
+        //Clear the previous result
+
+        //Show the loading state
+
+        //Search the recipe
+        await state.search.getResult();
+
+        //Display the result
+        console.log(state.search.result)
+
+    }
+}
+
+document.querySelector('.search').addEventListener('submit', e => {
+    e.preventDefault();
+    ctrlSearch();
+    console.log(e)
+})
+
+/**
+OR
+
+document.querySelector('.search__btn').addEventListener('click', e => {
+    e.preventDefault();
+    ctrlSearch();
+    console.log(e)
+})
+ */

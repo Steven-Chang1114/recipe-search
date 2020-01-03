@@ -18,6 +18,29 @@ export const getList = recipes => {
 
 }
 
+const formatString = (string, limit = 20) => {
+    let temp = 0
+    let newTitle = ''
+    let arr = []
+
+    if (string.length > limit){
+        arr = string.split(" ")
+
+        arr.forEach(cur => {
+            temp += cur.length
+            if (temp > limit){
+                return newTitle
+            }
+            newTitle += `${cur} `
+            
+        })
+
+        return `${newTitle} ...`
+    }
+    return string
+
+}
+
 const toSingleList = recipe => {
 
     const html = `
@@ -27,7 +50,7 @@ const toSingleList = recipe => {
                     <img src="${recipe.image_url}" alt="${recipe.title}">
                 </figure>
                 <div class="results__data">
-                    <h4 class="results__name">${recipe.title}</h4>
+                    <h4 class="results__name">${formatString(recipe.title)}</h4>
                     <p class="results__author">${recipe.publisher}</p>
                 </div>
             </a>

@@ -1,5 +1,7 @@
 // Global app controller
 import searchModel from "./model/Search"
+import {DOMstring} from "./view/base"
+import * as searchView from "./view/searchView"
 
 const state  = {
     //Search object
@@ -11,14 +13,17 @@ const state  = {
 }
 
 const ctrlSearch = async () => {
-    const searchRes = 'pizza' //Placeholder
+
+    const searchRes = searchView.getInput()
 
     if (searchRes){
 
+        console.log(`Searching ${searchRes}`)
         state.search = new searchModel(searchRes)
-        console.log(state);
 
         //Clear the previous result
+        searchView.clearResult();
+        searchView.clear()
 
         //Show the loading state
 
@@ -26,15 +31,17 @@ const ctrlSearch = async () => {
         await state.search.getResult();
 
         //Display the result
-        console.log(state.search.result)
+        searchView.getList(state.search.result)
 
+        console.log(state.search.result)
+        console.log("Search finish")
+     
     }
 }
 
-document.querySelector('.search').addEventListener('submit', e => {
+DOMstring.searchForm.addEventListener('submit', e => {
     e.preventDefault();
     ctrlSearch();
-    console.log(e)
 })
 
 /**

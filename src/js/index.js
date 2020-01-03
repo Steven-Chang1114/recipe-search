@@ -1,6 +1,6 @@
 // Global app controller
 import searchModel from "./model/Search"
-import {DOMstring} from "./view/base"
+import {DOMstring, loader, clearLoader} from "./view/base"
 import * as searchView from "./view/searchView"
 
 const state  = {
@@ -26,11 +26,13 @@ const ctrlSearch = async () => {
         searchView.clear()
 
         //Show the loading state
+        loader(DOMstring.result)
 
         //Search the recipe
         await state.search.getResult();
 
         //Display the result
+        clearLoader()
         searchView.getList(state.search.result)
 
         console.log(state.search.result)

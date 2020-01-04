@@ -8,13 +8,56 @@ export const clear = () => {
 
 export const clearResult = () => {
     DOMstring.resultList.innerHTML = ""
+    DOMstring.resultPage.innerHTML = ''
 }
 
-export const getList = recipes => {
+export const getList = (recipes, page = 1, resPerPage = 10) => {
+    const start = (page - 1) * resPerPage
+    const end = resPerPage * page
 
-    for (let element of recipes) {
+    for (let element of recipes.slice(start, end)) {
         toSingleList(element);
-    }    
+    }
+    
+    renderBtn(page, resPerPage, recipes.length)
+
+}
+
+//Private Function
+
+const createBtn = (page, type) => `
+
+<button class="btn-inline results__btn--${type}" data-forward = ${type == 'prev' ? page - 1 : page + 1}>
+    <span>Page ${type == 'prev' ? page - 1 : page + 1}</span>
+    <svg class="search__icon">
+        <use href="img/icons.svg#icon-triangle-${type == 'prev' ? 'left' : 'right'}"></use>
+    </svg>
+</button>
+
+`
+
+const renderBtn = (page, resPerPage, totalRes) => {
+    const totalPage = Math.ceil(totalRes / resPerPage) 
+    let btn;
+
+    if (page == 1 && totalPage > 1) {
+
+        btn = createBtn(page, 'next')
+
+    }else if (page < totalPage){
+
+        btn = `
+            ${createBtn(page, 'prev')}
+            ${createBtn(page, 'next')}
+        `
+
+    }else if (page == totalPage && totalPage > 1){
+
+        btn = createBtn(page, 'prev')
+
+    }
+
+    DOMstring.resultPage.insertAdjacentHTML('afterbegin', btn);
 
 }
 

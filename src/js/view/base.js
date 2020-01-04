@@ -2,7 +2,8 @@ export const DOMstring = {
     searchInput: document.querySelector('.search__field'),
     searchForm: document.querySelector('.search'),
     resultList: document.querySelector('.results__list'),
-    result: document.querySelector('.results')
+    result: document.querySelector('.results'),
+    resultPage: document.querySelector('.results__pages')
 } 
 
 export const loader = parent => {

@@ -46,6 +46,18 @@ DOMstring.searchForm.addEventListener('submit', e => {
     ctrlSearch();
 })
 
+DOMstring.resultPage.addEventListener('click', e => {
+
+    const btn = e.target.closest('.btn-inline')
+
+    if(btn){
+        const forward = parseInt(btn.dataset.forward)
+        searchView.clearResult()
+        searchView.getList(state.search.result, forward)
+    }
+    
+})
+
 /**
 OR
 

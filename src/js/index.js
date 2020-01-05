@@ -3,6 +3,7 @@ import searchModel from "./model/Search"
 import recipeModel from "./model/Recipe"
 import {DOMstring, loader, clearLoader} from "./view/base"
 import * as searchView from "./view/searchView"
+import * as recipeView from './view/recipeView'
 
 
 const state  = {
@@ -92,7 +93,9 @@ const controlRecipe = async () => {
 
             console.log(state.recipe)
 
-        }catch (error){
+            recipeView.showRecipe(state.recipe)
+
+        }catch (error ){
             alert("Please input right")
         }
     }

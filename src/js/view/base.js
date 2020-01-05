@@ -3,7 +3,8 @@ export const DOMstring = {
     searchForm: document.querySelector('.search'),
     resultList: document.querySelector('.results__list'),
     result: document.querySelector('.results'),
-    resultPage: document.querySelector('.results__pages')
+    resultPage: document.querySelector('.results__pages'),
+    recipePage: document.querySelector('.recipe')
 } 
 
 export const loader = parent => {

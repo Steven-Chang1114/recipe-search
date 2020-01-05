@@ -90,15 +90,14 @@ const controlRecipe = async () => {
 
             state.recipe.calcTime()
             state.recipe.calcServing()
-
-            //Testing
-            window.sb = state.recipe
+            state.recipe.parseIngredients()
+            
             console.log(state.recipe)
 
             recipeView.showRecipe(state.recipe)
 
         }catch (error ){
-            alert("Please input right")
+            alert(error)
         }
     }
     

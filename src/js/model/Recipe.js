@@ -49,7 +49,7 @@ export default class Recipe{
             let finalObj
             if(unitIndex > -1){
                 //There is a unit
-                const arrCount = array.substring(0, unitIndex) 
+                const arrCount = array.slice(0, unitIndex) 
                 
                 let count;
                 if (arrCount.length == 1){
@@ -61,7 +61,7 @@ export default class Recipe{
                 finalObj = {
                     count,
                     unit: array[unitIndex],
-                    ingredient: array.substring(unitIndex + 1).join(" ")
+                    ingredient: array.slice(unitIndex + 1).join(" ")
                 }
 
             }else if((typeof array[0]) == 'number'){
@@ -69,7 +69,7 @@ export default class Recipe{
                 finalObj = {
                     count: parseInt(array[0], 10),
                     unit: '',
-                    ingredient: array.substring(1).join(' ')
+                    ingredient: array.slice(1).join(' ')
                 }
             }else{
                 //No number of unit

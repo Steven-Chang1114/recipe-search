@@ -12,6 +12,7 @@ export default class Search{
             //console.log(this.result);
         } catch(error){
             console.log(error)
+            alert("Not found")
         }  
     } 
 } 

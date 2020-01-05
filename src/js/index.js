@@ -1,7 +1,9 @@
 // Global app controller
 import searchModel from "./model/Search"
+import recipeModel from "./model/Recipe"
 import {DOMstring, loader, clearLoader} from "./view/base"
 import * as searchView from "./view/searchView"
+
 
 const state  = {
     //Search object
@@ -11,6 +13,9 @@ const state  = {
     //Like 
     //Serving
 }
+
+
+//Search controller
 
 const ctrlSearch = async () => {
 
@@ -41,11 +46,6 @@ const ctrlSearch = async () => {
     }
 }
 
-DOMstring.searchForm.addEventListener('submit', e => {
-    e.preventDefault();
-    ctrlSearch();
-})
-
 DOMstring.resultPage.addEventListener('click', e => {
 
     const btn = e.target.closest('.btn-inline')
@@ -59,11 +59,46 @@ DOMstring.resultPage.addEventListener('click', e => {
 })
 
 /**
-OR
-
 document.querySelector('.search__btn').addEventListener('click', e => {
     e.preventDefault();
     ctrlSearch();
     console.log(e)
 })
+
+OR
  */
+
+DOMstring.searchForm.addEventListener('submit', e => {
+    e.preventDefault();
+    ctrlSearch();
+})
+
+
+//Recipe Controller
+
+const controlRecipe = async () => {
+    const id = window.location.hash.replace('#', '')
+    
+    if(id) {
+
+        state.recipe = new recipeModel(id)
+
+        try{
+
+            await state.recipe.getRecipe();
+
+            state.recipe.calcTime()
+            state.recipe.calcServing()
+
+            console.log(state.recipe)
+
+        }catch (error){
+            alert("Please input right")
+        }
+    }
+    
+}
+
+//window.addEventListener('hashchange', controlRecipe)
+//window.addEventListener('load', controlRecipe)
+['load', 'hashchange'].forEach(event => window.addEventListener(event, controlRecipe))

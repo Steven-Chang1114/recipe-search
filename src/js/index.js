@@ -91,6 +91,8 @@ const controlRecipe = async () => {
             state.recipe.calcTime()
             state.recipe.calcServing()
 
+            //Testing
+            window.sb = state.recipe
             console.log(state.recipe)
 
             recipeView.showRecipe(state.recipe)

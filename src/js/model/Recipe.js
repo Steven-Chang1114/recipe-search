@@ -26,4 +26,63 @@ export default class Recipe{
     calcServing(){
         this.serving = 4
     }
+
+    parseIngredients(){
+        const unitLong = ['tablespoons', 'tablespoon', 'ounces', 'ounce', 'teaspoons', 'teaspoon', 'cups', 'pounds']
+        const unitShort = ['tbsp', 'tbsp', 'oz', 'oz', 'tsp', 'tsp', 'cup', 'pound']
+
+        const newIngredients = this.ingredients.map(el => {
+
+            let ingredient = el.toLowerCase()
+
+            unitLong.forEach((cur, i) => {
+                ingredient = ingredient.replace(cur, unitShort[i])
+            })
+
+            ingredient = ingredient.replace(/ *\([^)]*\) */g, " ")
+
+            const array = ingredient.split(' ')
+
+            //For each of the element in an array, find the index of that element that includes in unitShort
+            const unitIndex = array.findIndex(el => unitShort.includes(el))
+
+            let finalObj
+            if(unitIndex > -1){
+                //There is a unit
+                const arrCount = array.substring(0, unitIndex) 
+                
+                let count;
+                if (arrCount.length == 1){
+                    count = eval(arrCount[0].replace('-', '+'))
+                }else{
+                    count = eval(arrCount.join('+'))
+                }
+
+                finalObj = {
+                    count,
+                    unit: array[unitIndex],
+                    ingredient: array.substring(unitIndex + 1).join(" ")
+                }
+
+            }else if((typeof array[0]) == 'number'){
+                //There is no unit but a number
+                finalObj = {
+                    count: parseInt(array[0], 10),
+                    unit: '',
+                    ingredient: array.substring(1).join(' ')
+                }
+            }else{
+                //No number of unit
+                finalObj = {
+                    count: 1,
+                    unit: '',
+                    ingredient
+                }
+            }
+
+            return finalObj
+        })
+
+        this.ingredients = newIngredients
+    }
 } 

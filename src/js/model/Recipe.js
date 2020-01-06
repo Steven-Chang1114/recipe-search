@@ -30,6 +30,7 @@ export default class Recipe{
     parseIngredients(){
         const unitLong = ['tablespoons', 'tablespoon', 'ounces', 'ounce', 'teaspoons', 'teaspoon', 'cups', 'pounds']
         const unitShort = ['tbsp', 'tbsp', 'oz', 'oz', 'tsp', 'tsp', 'cup', 'pound']
+        const units = [...unitShort, 'kg', 'g ']
 
         const newIngredients = this.ingredients.map(el => {
 
@@ -44,7 +45,7 @@ export default class Recipe{
             const array = ingredient.split(' ')
 
             //For each of the element in an array, find the index of that element that includes in unitShort
-            const unitIndex = array.findIndex(el => unitShort.includes(el))
+            const unitIndex = array.findIndex(el => units.includes(el))
 
             let finalObj
             if(unitIndex > -1){
@@ -64,7 +65,7 @@ export default class Recipe{
                     ingredient: array.slice(unitIndex + 1).join(" ")
                 }
 
-            }else if((typeof array[0]) == 'number'){
+            }else if(parseInt(array[0], 10)){
                 //There is no unit but a number
                 finalObj = {
                     count: parseInt(array[0], 10),
@@ -72,7 +73,7 @@ export default class Recipe{
                     ingredient: array.slice(1).join(' ')
                 }
             }else{
-                //No number of unit
+                //No number or unit
                 finalObj = {
                     count: 1,
                     unit: '',

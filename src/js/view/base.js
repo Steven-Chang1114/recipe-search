@@ -4,7 +4,8 @@ export const DOMstring = {
     resultList: document.querySelector('.results__list'),
     result: document.querySelector('.results'),
     resultPage: document.querySelector('.results__pages'),
-    recipePage: document.querySelector('.recipe')
+    recipePage: document.querySelector('.recipe'),
+
 } 
 
 export const loader = parent => {

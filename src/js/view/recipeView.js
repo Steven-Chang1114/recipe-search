@@ -1,10 +1,13 @@
 import {DOMstring} from "./base"
+import {Fraction} from "fractional"
+
+export const clearRecipe = () => DOMstring.recipePage.innerHTML = ""
 
 export const showRecipe = recipe => {
 
     const html = `
     <figure class="recipe__fig">
-    <img src="${recipe.img}" alt="Tomato" class="recipe__img">
+    <img src="${recipe.img}" alt="${recipe.title}" class="recipe__img">
     <h1 class="recipe__title">
         <span>${recipe.title}</span>
     </h1>
@@ -49,72 +52,9 @@ export const showRecipe = recipe => {
 
 <div class="recipe__ingredients">
     <ul class="recipe__ingredient-list">
-        <li class="recipe__item">
-            <svg class="recipe__icon">
-                <use href="img/icons.svg#icon-check"></use>
-            </svg>
-            <div class="recipe__count">1000</div>
-            <div class="recipe__ingredient">
-                <span class="recipe__unit">g</span>
-                pasta
-            </div>
-        </li>
 
-        <li class="recipe__item">
-            <svg class="recipe__icon">
-                <use href="img/icons.svg#icon-check"></use>
-            </svg>
-            <div class="recipe__count">1/2</div>
-            <div class="recipe__ingredient">
-                <span class="recipe__unit">cup</span>
-                ricotta cheese
-            </div>
-        </li>
+    ${recipe.ingredients.map(el => showIngredient(el)).join('')}
 
-        <li class="recipe__item">
-            <svg class="recipe__icon">
-                <use href="img/icons.svg#icon-check"></use>
-            </svg>
-            <div class="recipe__count">1</div>
-            <div class="recipe__ingredient">
-                <span class="recipe__unit"></span>
-                can of tomatoes, whole or crushed
-            </div>
-        </li>
-
-
-        <li class="recipe__item">
-            <svg class="recipe__icon">
-                <use href="img/icons.svg#icon-check"></use>
-            </svg>
-            <div class="recipe__count">1</div>
-            <div class="recipe__ingredient">
-                <span class="recipe__unit"></span>
-                can tuna packed in olive oil
-            </div>
-        </li>
-
-        <li class="recipe__item">
-            <svg class="recipe__icon">
-                <use href="img/icons.svg#icon-check"></use>
-            </svg>
-            <div class="recipe__count">1/2</div>
-            <div class="recipe__ingredient">
-                <span class="recipe__unit">cup</span>
-                grated parmesan cheese
-            </div>
-        </li>
-
-        <li class="recipe__item">
-            <svg class="recipe__icon">
-                <use href="img/icons.svg#icon-check"></use>
-            </svg>
-            <div class="recipe__count">1/4</div>
-            <div class="recipe__ingredient">
-                <span class="recipe__unit">cup</span>
-                fresh basil, chopped or torn
-            </div>
-        </li>
     </ul>
 
     <button class="btn-small recipe__btn">
@@ -129,9 +69,9 @@ export const showRecipe = recipe => {
     <h2 class="heading-2">How to cook it</h2>
     <p class="recipe__directions-text">
         This recipe was carefully designed and tested by
-        <span class="recipe__by">The Pioneer Woman</span>. Please check out directions at their website.
+        <span class="recipe__by">${recipe.publisher}</span>. Please check out directions at their website.
     </p>
-    <a class="btn-small recipe__btn" href="http://thepioneerwoman.com/cooking/pasta-with-tomato-cream-sauce/" target="_blank">
+    <a class="btn-small recipe__btn" href="${recipe.url}" target="_blank">
         <span>Directions</span>
         <svg class="search__icon">
             <use href="img/icons.svg#icon-triangle-right"></use>
@@ -142,4 +82,39 @@ export const showRecipe = recipe => {
     `
     
     DOMstring.recipePage.insertAdjacentHTML('afterbegin', html)
+}
+
+
+//Private Funciton
+const showIngredient = ingredient => {
+    return `
+        <li class="recipe__item">
+            <svg class="recipe__icon">
+                <use href="img/icons.svg#icon-check"></use>
+            </svg>
+            <div class="recipe__count">${formatCount(ingredient.count)}</div>
+            <div class="recipe__ingredient">
+                <span class="recipe__unit">${ingredient.unit}</span>
+                ${ingredient.ingredient}
+            </div>
+        </li>
+    `
+}
+
+const formatCount = count => {
+    if(count){
+        const [int, dec] = count.toString().split('.').map(el => parseInt(el, 10 ))
+
+        if(!dec){
+            return count
+        }else if(int == 0){
+            const fr = new Fraction(count)
+            return `${fr.numerator}/${fr.denominator}`
+        }else{
+            const fr = new Fraction(count - int)
+            return `${int} ${fr.numerator}/${fr.denominator}`
+        }
+
+    }
+    return "?"
 }

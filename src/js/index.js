@@ -81,19 +81,27 @@ const controlRecipe = async () => {
     const id = window.location.hash.replace('#', '')
     
     if(id) {
+        //Clear old recipe
+        recipeView.clearRecipe();
+
+        loader(DOMstring.recipePage)
+
+        if(state.search){
+            searchView.highlight(id) 
+        }
 
         state.recipe = new recipeModel(id)
 
         try{
 
             await state.recipe.getRecipe();
+            console.log(state.recipe.ingredients)
 
             state.recipe.calcTime()
             state.recipe.calcServing()
             state.recipe.parseIngredients()
-            
-            console.log(state.recipe)
 
+            clearLoader()
             recipeView.showRecipe(state.recipe)
 
         }catch (error ){

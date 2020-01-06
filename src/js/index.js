@@ -5,7 +5,8 @@ import listModel from "./model/List"
 import {DOMstring, loader, clearLoader} from "./view/base"
 import * as searchView from "./view/searchView"
 import * as recipeView from './view/recipeView'
-import List from "./model/List"
+import * as listView from './view/listView'
+
 
 
 const state  = {
@@ -16,6 +17,7 @@ const state  = {
     //Like 
     //Serving
 }
+window.state = state
 
 
 //Search controller
@@ -52,6 +54,7 @@ const ctrlSearch = async () => {
 DOMstring.resultPage.addEventListener('click', e => {
 
     const btn = e.target.closest('.btn-inline')
+    console.log(btn)
 
     if(btn){
         const forward = parseInt(btn.dataset.forward)
@@ -119,7 +122,6 @@ const controlRecipe = async () => {
 
 DOMstring.recipePage.addEventListener('click', e => {
     if(e.target.matches('.btn-dec, .btn-dec *') && state.recipe.serving > 1){
-        console.log('dec')
         state.recipe.updateServing('dec')
         recipeView.updateRecipe(state.recipe)
 
@@ -128,11 +130,36 @@ DOMstring.recipePage.addEventListener('click', e => {
         state.recipe.updateServing('inc')
         recipeView.updateRecipe(state.recipe)
 
+    }else if(e.target.matches('.toShop, .toShop *')){
+        controlList()
     }
-    console.log(state.recipe)
+    console.log(state.recipe.ingredients)
 })
 
 //List Controller
+DOMstring.shopping.addEventListener('click', e => {
+    const id = e.target.closest('.shopping__item').dataset.id
 
-const l = new List()
-window.l = l
+    if(e.target.matches('.shopping__delete, .shopping__delete *')) {
+        state.list.deleteItem();
+
+        listView.deleteItem(id)
+    }else if (e.target.matches('.shopping-value') && e.target.value > 0) {
+
+        const val = parseFloat(e.target.value) 
+        state.list.updateCount(id, val)
+        
+    }
+})
+
+const controlList = () => {
+
+    if(!state.list) state.list = new listModel();
+
+    state.recipe.ingredients.forEach(cur => {
+        
+        const item = state.list.addItem(cur.count, cur.unit, cur.ingredient)
+        
+        listView.renderList(item)
+    })
+}

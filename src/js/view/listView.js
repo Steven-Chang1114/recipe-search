@@ -1,0 +1,1 @@
+import {DOMstring} from "./base"

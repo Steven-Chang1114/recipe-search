@@ -3,6 +3,15 @@ import {Fraction} from "fractional"
 
 export const clearRecipe = () => DOMstring.recipePage.innerHTML = ""
 
+export const updateRecipe = recipe => {
+    document.querySelector('.recipe__info-data--people').textContent = recipe.serving
+
+    const arr = Array.from(document.querySelectorAll('.recipe__count'))
+    arr.forEach((el, i) => {
+        el.textContent = formatCount(recipe.ingredients[i].count)
+    })
+}
+
 export const showRecipe = recipe => {
 
     const html = `
@@ -28,12 +37,12 @@ export const showRecipe = recipe => {
         <span class="recipe__info-text"> servings</span>
 
         <div class="recipe__info-buttons">
-            <button class="btn-tiny">
+            <button class="btn-tiny btn-dec">
                 <svg>
                     <use href="img/icons.svg#icon-circle-with-minus"></use>
                 </svg>
             </button>
-            <button class="btn-tiny">
+            <button class="btn-tiny btn-inc">
                 <svg>
                     <use href="img/icons.svg#icon-circle-with-plus"></use>
                 </svg>

@@ -1,9 +1,11 @@
 // Global app controller
 import searchModel from "./model/Search"
 import recipeModel from "./model/Recipe"
+import listModel from "./model/List"
 import {DOMstring, loader, clearLoader} from "./view/base"
 import * as searchView from "./view/searchView"
 import * as recipeView from './view/recipeView'
+import List from "./model/List"
 
 
 const state  = {
@@ -114,3 +116,23 @@ const controlRecipe = async () => {
 //window.addEventListener('hashchange', controlRecipe)
 //window.addEventListener('load', controlRecipe)
 ['load', 'hashchange'].forEach(event => window.addEventListener(event, controlRecipe))
+
+DOMstring.recipePage.addEventListener('click', e => {
+    if(e.target.matches('.btn-dec, .btn-dec *') && state.recipe.serving > 1){
+        console.log('dec')
+        state.recipe.updateServing('dec')
+        recipeView.updateRecipe(state.recipe)
+
+    }else if(e.target.matches('.btn-inc, .btn-inc *')){
+         
+        state.recipe.updateServing('inc')
+        recipeView.updateRecipe(state.recipe)
+
+    }
+    console.log(state.recipe)
+})
+
+//List Controller
+
+const l = new List()
+window.l = l

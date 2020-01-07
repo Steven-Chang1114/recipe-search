@@ -7,6 +7,7 @@ import {DOMstring, loader, clearLoader} from "./view/base"
 import * as searchView from "./view/searchView"
 import * as recipeView from './view/recipeView'
 import * as listView from './view/listView'
+import * as likeView from './view/likeView'
 
 
 
@@ -16,6 +17,7 @@ const state  = {
     //Current page
     //Current recipe
     //Like 
+    likes: new likeModel()
     //Serving
 }
 window.state = state
@@ -103,7 +105,7 @@ const controlRecipe = async () => {
             state.recipe.parseIngredients()
 
             clearLoader()
-            recipeView.showRecipe(state.recipe)
+            recipeView.showRecipe(state.recipe, state.likes.isLiked(id))
 
         }catch (error ){
             alert(error)
@@ -129,7 +131,6 @@ DOMstring.recipePage.addEventListener('click', e => {
     }else if(e.target.matches('.toShop, .toShop *')){
         controlList()
     }else if(e.target.matches('.recipe__love, .recipe__love *')){
-        console.log('like')
         controlLike()
     }
 })
@@ -169,18 +170,22 @@ const controlLike = () => {
 
     if (!state.likes.isLiked(id)){
         //Change CSS
-
+        likeView.toggleLike(true)
         //Add to list
         const newLike = state.likes.addLike(id, state.recipe.title, state.recipe.publisher, state.recipe.img)
         //Render
+        likeView.renderLike(state.recipe)
         console.log(state.likes)
 
     }else{
         //Change CSS
-
+        likeView.toggleLike(false)
         //Remove from list
         state.likes.deleteLike(id)
         //Remove from view List
+        likeView.deleteRenderLike(id)
         console.log(state.likes)
     }
+    likeView.likeMenu(state.likes.getNumOfLikes())
 }
+likeView.likeMenu(state.likes.getNumOfLikes())

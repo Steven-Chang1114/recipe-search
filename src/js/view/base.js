@@ -5,7 +5,9 @@ export const DOMstring = {
     result: document.querySelector('.results'),
     resultPage: document.querySelector('.results__pages'),
     recipePage: document.querySelector('.recipe'),
-    shopping: document.querySelector('.shopping__list')
+    shopping: document.querySelector('.shopping__list'),
+    like: document.querySelector('.likes__field'),
+    likeList: document.querySelector('.likes__list')
 } 
 
 export const loader = parent => {

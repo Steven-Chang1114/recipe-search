@@ -27,7 +27,7 @@ export const highlight = id => {
     const result = Array.from(document.querySelectorAll('.results__link'))
     result.forEach(el => el.classList.remove('results__link--active'))
 
-    document.querySelector(`a[href = '#${id}']`).classList.add('results__link--active')
+    document.querySelector(`.results__link[href = '#${id}']`).classList.add('results__link--active')
 }
 
 //Private Function
@@ -68,7 +68,7 @@ const renderBtn = (page, resPerPage, totalRes) => {
 
 }
 
-const formatString = (string, limit = 20) => {
+export const formatString = (string, limit = 20) => {
     let temp = 0
     let newTitle = ''
     let arr = []

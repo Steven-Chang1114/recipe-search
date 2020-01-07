@@ -17,7 +17,6 @@ const state  = {
     //Current page
     //Current recipe
     //Like 
-    likes: new likeModel()
     //Serving
 }
 window.state = state
@@ -164,6 +163,20 @@ const controlList = () => {
 }
 
 //Likes Controller
+window.addEventListener('load', () => {
+    state.likes = new likeModel()
+
+    state.likes.readData();
+     
+    likeView.likeMenu(state.likes.getNumOfLikes())
+
+    state.likes.likes.forEach(el => {
+        likeView.renderLike(el)
+    })
+         
+    
+})
+
 const controlLike = () => {
     if (!state.likes) state.likes = new likeModel();
     const id = state.recipe.id
@@ -174,7 +187,7 @@ const controlLike = () => {
         //Add to list
         const newLike = state.likes.addLike(id, state.recipe.title, state.recipe.publisher, state.recipe.img)
         //Render
-        likeView.renderLike(state.recipe)
+        likeView.renderLike(newLike)
         console.log(state.likes)
 
     }else{
@@ -188,4 +201,3 @@ const controlLike = () => {
     }
     likeView.likeMenu(state.likes.getNumOfLikes())
 }
-likeView.likeMenu(state.likes.getNumOfLikes())

@@ -2,6 +2,7 @@
 import searchModel from "./model/Search"
 import recipeModel from "./model/Recipe"
 import listModel from "./model/List"
+import likeModel from "./model/Like"
 import {DOMstring, loader, clearLoader} from "./view/base"
 import * as searchView from "./view/searchView"
 import * as recipeView from './view/recipeView'
@@ -28,7 +29,6 @@ const ctrlSearch = async () => {
 
     if (searchRes){
 
-        console.log(`Searching ${searchRes}`)
         state.search = new searchModel(searchRes)
 
         //Clear the previous result
@@ -44,9 +44,6 @@ const ctrlSearch = async () => {
         //Display the result
         clearLoader()
         searchView.getList(state.search.result)
-
-        console.log(state.search.result)
-        console.log("Search finish")
      
     }
 }
@@ -100,7 +97,6 @@ const controlRecipe = async () => {
         try{
 
             await state.recipe.getRecipe();
-            console.log(state.recipe.ingredients)
 
             state.recipe.calcTime()
             state.recipe.calcServing()
@@ -132,8 +128,10 @@ DOMstring.recipePage.addEventListener('click', e => {
 
     }else if(e.target.matches('.toShop, .toShop *')){
         controlList()
+    }else if(e.target.matches('.recipe__love, .recipe__love *')){
+        console.log('like')
+        controlLike()
     }
-    console.log(state.recipe.ingredients)
 })
 
 //List Controller
@@ -162,4 +160,27 @@ const controlList = () => {
         
         listView.renderList(item)
     })
+}
+
+//Likes Controller
+const controlLike = () => {
+    if (!state.likes) state.likes = new likeModel();
+    const id = state.recipe.id
+
+    if (!state.likes.isLiked(id)){
+        //Change CSS
+
+        //Add to list
+        const newLike = state.likes.addLike(id, state.recipe.title, state.recipe.publisher, state.recipe.img)
+        //Render
+        console.log(state.likes)
+
+    }else{
+        //Change CSS
+
+        //Remove from list
+        state.likes.deleteLike(id)
+        //Remove from view List
+        console.log(state.likes)
+    }
 }

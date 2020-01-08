@@ -2,10 +2,9 @@
 
 This web app has been coded using modern JavaScript feautures: ES6, Webpack, npm, babel, etc.
 
-You can search over than a million recipes of any ingredients that have on your brain. The app displays you a bunch of recipes related to your search. When you select a recipe, the app shows you the ingredients that you need to prepare it.
-You can like and storage your favorites recipes and add the ingredients to your shopping list.
-
 Data fetched from [forkify-api](http://forkify-api.herokuapp.com/)
+
+The user can search over millions of recipe with relative ingredients, and people can save the recipe,costomize the amount of servings and add the ingredients into the shopping lists 
 
 ### Installation
 
